@@ -127,6 +127,14 @@
       "brand": "Realme",
       "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK8ifQ7eVjOlaVRssk2Xx5mBFc7dtTMGlzLA&usqp=CAU",
       "id": 16
+    },
+    {
+      "title": "Redmi 5A",
+      "description": "An android application with smart features and advanced technology",
+      "price": "952",
+      "brand": "Android",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK8ifQ7eVjOlaVRssk2Xx5mBFc7dtTMGlzLA&usqp=CAU",
+      "id": 17
     }
   ]
 }

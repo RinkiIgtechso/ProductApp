@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div v-if="error">{{ error }}</div>
-    <div class="addPro" @click="this.show = !show" >Add Product</div>
+    <div class="addPro" @click="show = true" >Add Product</div>
     <input type="text" v-model="query" placeholder="Enter product name" @keypress="searchData">
     <div v-if="data.length">
       <PostList :posts="data" />
@@ -34,8 +34,7 @@ export default {
     return{
     query:'',
     data:[],
-    error:"",
-    show:false
+    error:""
     }
   },
   methods:{
@@ -49,6 +48,7 @@ export default {
     const price = ref(null);
     const brand = ref(null);
     const thumbnail = ref(null);
+    const show = ref(false);
 
     const getData = () => {
       fetch("http://localhost:3000/products")
@@ -88,11 +88,11 @@ export default {
         }
       })
       .then((res)=>{return res.json()})
-      .then((res)=>{console.log(res, this.show);this.show = false})
+      .then((res)=>{console.log(res);show.value = false})
       .catch((err)=>{console.log(err)})
     }
 
-    return { data, searchData, title, description, price, brand, thumbnail, submit }
+    return { data, searchData, title, description, price, brand, thumbnail, submit, show }
   }
     
 }
