@@ -130,11 +130,19 @@
     },
     {
       "title": "Redmi 5A",
-      "description": "An android application with smart features and advanced technology",
-      "price": "952",
+      "description": "An android application with smart features and advanced technology updated",
+      "price": 9874,
       "brand": "Android",
       "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK8ifQ7eVjOlaVRssk2Xx5mBFc7dtTMGlzLA&usqp=CAU",
       "id": 17
+    },
+    {
+      "title": "Oppo 8",
+      "description": "Oppo is a good phone, comes with latest features and technology",
+      "price": "896",
+      "brand": "Oppo",
+      "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbjyzT_yLKtyk-jMu4FUeCPXPRO4n5SfM1DQ&usqp=CAU",
+      "id": 18
     }
   ]
 }

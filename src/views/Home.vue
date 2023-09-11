@@ -1,10 +1,10 @@
 <template>
   <div class="home">
     <div v-if="error">{{ error }}</div>
-    <div class="addPro" @click="show = true" >Add Product</div>
+    <div class="addPro" @click="openModal" >Add Product</div>
     <input type="text" v-model="query" placeholder="Enter product name" @keypress="searchData">
     <div v-if="data.length">
-      <PostList :posts="data" />
+      <PostList :posts="data" getData="getData()"/>
     </div>
     <div v-else>Loading...</div>
     <div class="backdrop" v-if="show">
@@ -15,7 +15,10 @@
         <input type="text" v-model="price" placeholder="Enter price" >
         <input type="text" v-model="brand" placeholder="Enter brand">
         <input type="text" v-model="thumbnail" placeholder="Enter thumbnail" ><br/>
-        <button @click="submit">Submit</button>
+        <div class="buttons">
+          <button @click="submit">Submit</button>
+          <button @click="closeModal">Canel</button>
+        </div>
       </div>
     </div>
   </div>
@@ -24,6 +27,7 @@
 <script>
 
 import PostList from '@/components/PostList.vue';
+import getData from '@/composable/getData';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 
@@ -41,23 +45,24 @@ export default {
 
   },
   setup(){
-    const data = ref([]);
-    const error = ref(null);
+    // const data = ref([]);
+    // const error = ref(null);
     const title = ref(null);
     const description = ref(null);
     const price = ref(null);
     const brand = ref(null);
     const thumbnail = ref(null);
     const show = ref(false);
+    const {data, error, load} = getData();
 
-    const getData = () => {
-      fetch("http://localhost:3000/products")
-      .then(res =>{ return res.json()})
-      .then((res)=>{
-        data.value = res;
-      })
-      .catch((err)=>{error.value=err.message});
-    };
+    // const getData = () => {
+    //   fetch("http://localhost:3000/products")
+    //   .then(res =>{ return res.json()})
+    //   .then((res)=>{
+    //     data.value = res;
+    //   })
+    //   .catch((err)=>{error.value=err.message});
+    // };
 
     const searchData =  (e) =>{
       if(e.key==='Enter'){
@@ -69,8 +74,21 @@ export default {
       }
     }
     onMounted(()=>{
-      getData();
+      load();
     })
+    // onUpdated(()=>{
+    //   getData();
+    // })
+
+    const openModal = () =>{
+      show.value = true;
+      document.body.style.overflow='hidden'
+    }
+
+    const closeModal = () =>{
+      show.value = false;
+      document.body.style.overflow='unset'
+    }
 
     const submit = ()=>{
       let data = {
@@ -88,11 +106,15 @@ export default {
         }
       })
       .then((res)=>{return res.json()})
-      .then((res)=>{console.log(res);show.value = false})
+      .then((res)=>{
+        show.value = false;
+        document.body.style.overflow='unset';
+        load();
+      })
       .catch((err)=>{console.log(err)})
     }
 
-    return { data, searchData, title, description, price, brand, thumbnail, submit, show }
+    return { data, searchData, title, description, price, brand, thumbnail, submit, show, openModal, closeModal }
   }
     
 }
@@ -149,5 +171,10 @@ export default {
     background-color: darkslategray;
     color: white;
     cursor: pointer;
+  }
+  .buttons{
+    display: flex;
+    gap:20px;
+    justify-content: center;
   }
 </style>

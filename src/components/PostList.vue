@@ -28,35 +28,39 @@
 
 import { ref } from 'vue';
 import SinglePost from "./SinglePost.vue";
+import getData from '@/composable/getData';
 
 export default {
-    props:[ 'posts' ],
+    props:[ 'posts', 'getData' ],
     components:{ SinglePost },
     setup(props){
+        console.log(props.getData)
         // console.log(props.posts);
         const title = ref(null);
         const desc = ref(null);
         const price = ref(null);
         const show = ref(null);
+        const {data, error, load} = getData();
         const getImage = (img) => {
             return img;
         };
         const editPost = (id)=>{
             show.value = id;
+            document.body.style.overflow = 'hidden';
         };
         const deleteData = (id)=>{
             fetch(`http://localhost:3000/products/${id}`,{
                 method:"DELETE"
             })
             .then((res)=>{return res.json()})
-            .then((res)=>{console.log(res)})
+            .then((res)=>{console.log(res);load()})
             .catch((err)=>{console.log(err)})
         };
         const clickaway = ()=>{
-            show.value = null
+            show.value = null;
+            document.body.style.overflow = 'unset';
         }
         const submit = ()=>{
-            console.log(show.value)
             let obj = {"title":title.value,"description":desc.value, "price":Number(price.value)};
             console.log(obj)
             fetch(`http://localhost:3000/products/${show.value}`,{
@@ -67,7 +71,7 @@ export default {
                 }
             })
             .then((res)=>{return res.json()})
-            .then((res)=>{console.log(res);show.value = null;})
+            .then((res)=>{;show.value = null; document.body.style.overflow = 'unset'; load()})
             .catch((err)=>console.log(err))
         }
         return { getImage, editPost, deleteData, title, desc, price, show, clickaway, submit }
@@ -87,7 +91,6 @@ export default {
         gap:25px;
         padding:15px;
     }
-
     .product-list>div{
         box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
         border-radius:10px ;
@@ -102,11 +105,9 @@ export default {
         padding: 10px;
         text-align: center;
     }
-
     .list h3{
         font-size: 15px;
     }
-
     .list p{
         font-style:normal;
         font-size: 13px;
@@ -148,7 +149,7 @@ export default {
         background-color: rgb(161, 8, 8);
     }
     .backdrop{
-        background: rgba(0,0,0,0.15);
+        background: rgba(0,0,0,0.55);
         position:fixed;
         top:0;
         left:0;
